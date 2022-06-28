@@ -8,6 +8,7 @@ body {
     margin: 0;
     font-family: 'Bebas Neue', cursive;
     background-color: #F5F5F5;
+    scroll-behavior: smooth;
 }
 
 h1 {
