@@ -56,11 +56,11 @@ const getQuotes = async () => {
         const response = await fetch(apiURL);
         apiQuotes = await response.json();
         newQuote();
-        return;
     } catch (error) {
         // Catch Error Here 
         console.log(error);
     }
+    return;
 };
 
 // Tweet Quote

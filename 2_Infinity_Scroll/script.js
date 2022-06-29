@@ -56,11 +56,11 @@ const getPhotos = async () => {
         const response = await fetch(apiUrl);
         photosArray = await response.json();
         displayPhotos();
-        return;
     } catch (error) {
         // Catch Error Here
         console.log(error);
     }
+    return;
 };
 
 // Check TO See if Scrolling Near Bottom of Page, Load More Photos
