@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700&display=swap');
+
 html {
     box-sizing: border-box;
 }
@@ -9,14 +11,32 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
+    font-family: 'League Spartan', sans-serif;
     font-size: 12px;
 }
 
+.player-container {
+    height: 500px;
+    width: 400px;
+    background: #E7E7E7;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px 5px rgba(0, 0, 0, 0.3);
+}
+
 .img-container {
+    height: 300px;
+    width: 300px;
     position: relative;
     top: -50px;
     left: 50px;
+}
+
+.img-container img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 5px 30px 5px rgba(0, 0, 0, 0.5);
 }
 
 h2 {
@@ -66,10 +86,16 @@ h3 {
     width: 200px;
 }
 
-.fas {
+.fa-solid {
     font-size: 30px;
     color: rgb(129, 129, 129);
     margin-right: 30px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fa-solid:hover {
+    filter: brightness(50%);
 }
 
 .main-button {
@@ -80,6 +106,10 @@ h3 {
 
 /* Media Query: iPhone (Vertical) */
 @media screen and (max-width: 376px) {
+    .player-container {
+        width: 95vw;
+    }
+
     .img-container {
         left: 29px;
     }
