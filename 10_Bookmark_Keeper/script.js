@@ -6,7 +6,7 @@ const websiteNameEl = document.getElementById('website-name');
 const websiteURLEl = document.getElementById('website-url');
 const bookmarksContainer = document.getElementById('bookmarks-container');
 
-let bookmarks = [];
+let bookmarks = {};
 
 // Show Modal, Focus on Input
 const showModal = (e) => {
@@ -39,6 +39,49 @@ const validate = (nameValue, urlValue) => {
     return true;
 };
 
+// Build Bookmarks DOM
+const buildBookmarks = () => {
+    // Remove All Bookmark Elements From DOM
+    bookmarksContainer.textContent = '';
+
+    // Build Items
+    Object.keys(bookmarks).forEach((id) => {
+        const { name, url } = bookmarks[id];
+
+        // Item
+        const item = document.createElement('div');
+        item.classList.add('item');
+
+        // Close Icon
+        const closeIcon = document.createElement('i');
+        closeIcon.classList.add('fa-solid', 'fa-times');
+        closeIcon.setAttribute('title', 'Delete Bookmark');
+        closeIcon.setAttribute('onclick', `deleteBookmark('${url}')`);
+
+        // Favicon / Link Container
+        const linkInfo = document.createElement('div');
+        linkInfo.classList.add('name');
+
+        // Favicon
+        const favicon = document.createElement('img');
+        favicon.setAttribute('src', `https://s2.googleusercontent.com/s2/favicons?domain=${url}`);
+        favicon.setAttribute('alt', 'Favicon');
+
+        // Link
+        const link = document.createElement('a');
+        link.setAttribute('href', `${url}`);
+        link.setAttribute('target', '_blank');
+        link.textContent = name;
+
+        // Append To Bookmarks Container
+        linkInfo.append(favicon, link);
+        item.append(closeIcon, linkInfo);
+        bookmarksContainer.appendChild(item);
+        return;
+    });
+    return;
+};
+
 // Fetch Bookmarks
 const fetchBookmarks = () => {
     // Get Bookmarks from local storage if available
@@ -46,14 +89,21 @@ const fetchBookmarks = () => {
         bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
     } else {
         // Create bookmarks array in local storage
-        bookmarks = [
-            {
-                name: 'Enthr',
-                url: 'http://github.com/enthr'
-            }
-        ];
+        bookmarks = {};
         localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     }
+
+    buildBookmarks();
+    return;
+};
+
+// Delete Bookmark
+const deleteBookmark = (id) => {
+    if (bookmarks[id]) delete bookmarks[id];
+    // Update Bookmarks Array in localStorage, re-populate DOM
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    fetchBookmarks();
+    return;
 };
 
 // Handle Data From Form
@@ -75,7 +125,8 @@ const storeBookmark = (e) => {
         url: urlValue
     };
 
-    bookmarks.push(bookmark);
+    bookmarks[urlValue] = bookmark;
+	// Set bookmarks in localStorage, Fetch, Reset Input Fields
     localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     fetchBookmarks();
     bookmarkForm.reset();
