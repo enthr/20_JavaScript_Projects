@@ -6,6 +6,8 @@ const websiteNameEl = document.getElementById('website-name');
 const websiteURLEl = document.getElementById('website-url');
 const bookmarksContainer = document.getElementById('bookmarks-container');
 
+let bookmarks = [];
+
 // Show Modal, Focus on Input
 const showModal = (e) => {
     modal.classList.add('show-modal');
@@ -37,6 +39,23 @@ const validate = (nameValue, urlValue) => {
     return true;
 };
 
+// Fetch Bookmarks
+const fetchBookmarks = () => {
+    // Get Bookmarks from local storage if available
+    if (localStorage.getItem('bookmarks')) {
+        bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+    } else {
+        // Create bookmarks array in local storage
+        bookmarks = [
+            {
+                name: 'Enthr',
+                url: 'http://github.com/enthr'
+            }
+        ];
+        localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    }
+};
+
 // Handle Data From Form
 const storeBookmark = (e) => {
     e.preventDefault();
@@ -51,8 +70,21 @@ const storeBookmark = (e) => {
         return false;
     }
 
-    
+    const bookmark = {
+        name: nameValue,
+        url: urlValue
+    };
+
+    bookmarks.push(bookmark);
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    fetchBookmarks();
+    bookmarkForm.reset();
+    websiteNameEl.focus();
+    return;
 };
 
 // Event Listeners
 bookmarkForm.addEventListener('submit', storeBookmark);
+
+// On Load, fetchBookmarks
+fetchBookmarks();
