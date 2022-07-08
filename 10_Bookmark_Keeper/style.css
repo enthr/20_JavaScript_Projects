@@ -2,7 +2,7 @@
 
 :root {
     --primary-color: #FF6D00;
-    --border-radius: 25px;
+    --border-radius: 5px;
 }
 
 html {
@@ -113,10 +113,12 @@ a:hover, a:active {
 @keyframes modalopen {
     from {
         opacity: 0;
+        transform: translateY(-100%);
     }
 
     to {
         opacity: 1;
+        transform: translateY(0);
     }
 }
 
