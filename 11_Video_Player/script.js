@@ -31,10 +31,14 @@ const togglePlay = (e) => {
 // On Video End, Show Play Icon
 video.addEventListener('ended', showPlayIcon);
 
-
-
 // Progress Bar ---------------------------------- //
 
+
+// Update Progress Bar as Video Plays
+const updateProgress = (e) => {
+    progressBar.style.width = `${(video.currentTime / video.duration) * 100}%`;
+    return;
+};
 
 
 // Volume Controls --------------------------- //
@@ -51,3 +55,5 @@ video.addEventListener('ended', showPlayIcon);
 // Event Listeners
 playBtn.addEventListener('click', togglePlay);
 video.addEventListener('click', togglePlay);
+video.addEventListener('timeupdate', updateProgress);
+video.addEventListener('canplay', updateProgress);
