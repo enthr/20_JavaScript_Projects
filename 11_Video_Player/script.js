@@ -60,6 +60,8 @@ const setProgress = (e) => {
 
 // Volume Controls --------------------------- //
 
+let lastVolume = 1;
+
 // Volume Bar
 const changeVolume = (e) => {
     let volume = e.offsetX / volumeRange.offsetWidth;
@@ -72,13 +74,33 @@ const changeVolume = (e) => {
 
     // Chnage Icon Depending on Volume
     volumeIcon.className = '';
-    if(volume > 0.7) {
+    if (volume > 0.7) {
         volumeIcon.classList.add('fa-solid', 'fa-volume-up');
-    } else if(volume < 0.7 && volume > 0) {
+    } else if (volume < 0.7 && volume > 0) {
         volumeIcon.classList.add('fa-solid', 'fa-volume-down');
-    } else if(volume === 0) {
+    } else if (volume === 0) {
         volumeIcon.classList.add('fa-solid', 'fa-volume-off');
     }
+    lastVolume = volume;
+    return;
+};
+
+// Mute/Unmute
+const toggleMute = (e) => {
+    volumeIcon.className = '';
+    if (video.volume) {
+        lastVolume = video.volume;
+        video.volume = 0;
+        volumeBar.style.width = 0;
+        volumeIcon.classList.add('fa-solid', 'fa-volume-mute');
+        volumeIcon.setAttribute('title', 'Unmute');
+    } else {
+        video.volume = lastVolume;
+        volumeBar.style.width = `${lastVolume * 100}%`;
+        volumeIcon.classList.add('fa-solid', 'fa-volume-up');
+        volumeIcon.setAttribute('title', 'Mute');
+    }
+    return;
 };
 
 
@@ -97,3 +119,4 @@ video.addEventListener('timeupdate', updateProgress);
 video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
 volumeRange.addEventListener('click', changeVolume);
+volumeIcon.addEventListener('click', toggleMute);
