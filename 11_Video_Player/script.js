@@ -52,13 +52,34 @@ const updateProgress = (e) => {
 // Click To Seek Within The Video
 const setProgress = (e) => {
     const newTime = e.offsetX / progressRange.offsetWidth;
-    progressBar.style.width = `${newTime*100}%`;
+    progressBar.style.width = `${newTime * 100}%`;
     video.currentTime = newTime * video.duration;
     return;
 };
 
 
 // Volume Controls --------------------------- //
+
+// Volume Bar
+const changeVolume = (e) => {
+    let volume = e.offsetX / volumeRange.offsetWidth;
+    // Rounding Volume Up or Down
+    if (volume < 0.1) volume = 0;
+    if (volume > 0.9) volume = 1;
+
+    volumeBar.style.width = `${volume * 100}%`;
+    video.volume = volume;
+
+    // Chnage Icon Depending on Volume
+    volumeIcon.className = '';
+    if(volume > 0.7) {
+        volumeIcon.classList.add('fa-solid', 'fa-volume-up');
+    } else if(volume < 0.7 && volume > 0) {
+        volumeIcon.classList.add('fa-solid', 'fa-volume-down');
+    } else if(volume === 0) {
+        volumeIcon.classList.add('fa-solid', 'fa-volume-off');
+    }
+};
 
 
 
@@ -75,3 +96,4 @@ video.addEventListener('click', togglePlay);
 video.addEventListener('timeupdate', updateProgress);
 video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
+volumeRange.addEventListener('click', changeVolume);
